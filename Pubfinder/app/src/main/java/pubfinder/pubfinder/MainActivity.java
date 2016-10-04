@@ -26,9 +26,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-
-
-        //yoyoyoyo test mit github commit :)
     }
 
     @Override

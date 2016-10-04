@@ -1,0 +1,8 @@
+apply plugin: 'java'
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'org.freemarker:freemarker:2.3.25-incubating'
+    compile 'de.greenrobot:greendao-generator:2.1.0'
+}
