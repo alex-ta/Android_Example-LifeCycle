@@ -1,5 +1,6 @@
 package pubfinder.pubfinder;
 
+import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,20 +10,22 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import pubfinder.pub.showpubs.DynamicListViewAdapter;
+import pubfinder.pub.showpubs.DynamicViewGen;
 import pubfinder.pubfinder.db.DaoSession;
 import pubfinder.pubfinder.db.Pub;
 
 public class MainActivity extends AppCompatActivity {
 
-<<<<<<< HEAD
     private ListView showPub;
-=======
     private DaoSession m_DaoSession = null;
->>>>>>> origin/master
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +33,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-<<<<<<< HEAD
         this.showPub = (ListView) this.findViewById(R.id.show_listview);
+        // Fill Data
 
+        List<Pub> pubs = new ArrayList<Pub>();
+        Pub pub = new Pub(null, "TequilaBar1", "Straße 123", "Blackmusic");      // object pub is created
+        pubs.add(pub);
+        pub = new Pub(null, "TequilaBar2", "Straße 23", "HipHop");      // object pub is created
+        pubs.add(pub);
+        pub = new Pub(null, "TequilaBar3", "Straße 13", "Metal");
+        pubs.add(pub);
+        pub = new Pub(null, "TequilaBar4", "Straße 12", "Rap");
+        pubs.add(pub);
+        // Load Data
+        this.showPub.setAdapter(new DynamicListViewAdapter<Pub>(this.getApplicationContext(), pubs, new DynamicViewGen<Pub>(Pub.class)));
 
-=======
         //Get DB-Session
         m_DaoSession = ((GlobalApplication) getApplication()).getDaoSession();
->>>>>>> origin/master
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
