@@ -5,11 +5,19 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.List;
+
+import pubfinder.pubfinder.db.DaoSession;
+import pubfinder.pubfinder.db.Pub;
+
 public class MainActivity extends AppCompatActivity {
+
+    private DaoSession m_DaoSession = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +26,30 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //Get DB-Session
+        m_DaoSession = ((GlobalApplication) getApplication()).getDaoSession();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                // Max hier bist du
+                // Examples to insert into DB
+                /*
+                Pub pub = new Pub(null, "TequilaBar", "Straße 123", "Blackmusic");      // object pub is created
+                m_DaoSession.getPubDao().insert(pub);                                   // pub is inserted into database
+                */
             }
         });
+
+        // example to get objects from database and their adresses
+        /*
+        Pub pub = m_DaoSession.getPubDao().load(12);            // via id
+        List<Pub> pubs = m_DaoSession.getPubDao().loadAll();    // get all
+        pubs.get(0).getName();                                  // get name
+        pubs.get(0).getAddress();                               // ...
+        */
+
     }
 
     @Override
