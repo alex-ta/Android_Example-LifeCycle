@@ -21,11 +21,18 @@ import pubfinder.pub.showpubs.DynamicListViewAdapter;
 import pubfinder.pub.showpubs.DynamicViewGen;
 import pubfinder.pubfinder.db.DaoSession;
 import pubfinder.pubfinder.db.Pub;
+// import Max
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.widget.EditText;
+import android.text.InputType;
+import android.content.DialogInterface;
 
 public class MainActivity extends AppCompatActivity {
 
     private ListView showPub;
     private DaoSession m_DaoSession = null;
+    private String m_Text = "Hallo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Get DB-Session
         m_DaoSession = ((GlobalApplication) getApplication()).getDaoSession();
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,9 +68,36 @@ public class MainActivity extends AppCompatActivity {
                 Pub pub = new Pub(null, "TequilaBar", "Straße 123", "Blackmusic");      // object pub is created
                 m_DaoSession.getPubDao().insert(pub);                                   // pub is inserted into database
                 */
-            }
-        });
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Add Pub");
 
+                // Set up the input
+                final EditText input = new EditText(MainActivity.this);
+                // set texttyp for input
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        MainActivity.this.m_Text = input.getText().toString();
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+                // create new Pub with the input (m_Text)
+                Pub pub = new Pub(null, m_Text, " ", " ");
+                MainActivity.this.m_DaoSession.getPubDao().insert(pub);
+            }
+            // how and where to update the ListView?
+
+        });
         // example to get objects from database and their adresses
         /*
         Pub pub = m_DaoSession.getPubDao().load(12);            // via id
