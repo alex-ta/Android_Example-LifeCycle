@@ -44,16 +44,7 @@ public class MainActivity extends AppCompatActivity {
         // Fill Data
 
         List<Pub> pubs = new ArrayList<Pub>();
-        /*Pub pub = new Pub(null, "TequilaBar1", "Straße 123", "Blackmusic");      // object pub is created
-        pubs.add(pub);
-        pub = new Pub(null, "TequilaBar2", "Straße 23", "HipHop");      // object pub is created
-        pubs.add(pub);
-        pub = new Pub(null, "TequilaBar3", "Straße 13", "Metal");
-        pubs.add(pub);
-        pub = new Pub(null, "TequilaBar4", "Straße 12", "Rap");
-        pubs.add(pub);*/
 
-        //List<Pub> pubs = m_DaoSession.getPubDao().loadAll();
         // Load Data
         pubAdapter = new DynamicListViewAdapter<Pub> (this.getApplicationContext(), pubs, new DynamicViewGen<Pub>(Pub.class));
         this.showPub.setAdapter(pubAdapter);
