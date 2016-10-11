@@ -12,9 +12,9 @@ import java.util.List;
 
 public class DynamicListViewAdapter<TYPE> extends BaseAdapter {
 
-    List<TYPE> list;
-    DynamicViewGen<TYPE> viewGen;
-    Context ctx;
+    private List<TYPE> list;
+    private DynamicViewGen<TYPE> viewGen;
+    private Context ctx;
 
     public DynamicListViewAdapter(Context ctx, List<TYPE> data, DynamicViewGen<TYPE> gen){
         this.list = data;
@@ -40,5 +40,11 @@ public class DynamicListViewAdapter<TYPE> extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         return viewGen.getView(list.get(position), ctx);
+    }
+    public void setList(List<TYPE> list){
+        this.list = list;
+    }
+    public List<TYPE> getList(){
+        return this.list;
     }
 }

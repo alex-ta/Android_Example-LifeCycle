@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView showPub;
     private DaoSession m_DaoSession = null;
-    private String m_Text = "Hallo";
+    private DynamicListViewAdapter<Pub> pubAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +44,19 @@ public class MainActivity extends AppCompatActivity {
         // Fill Data
 
         List<Pub> pubs = new ArrayList<Pub>();
-        Pub pub = new Pub(null, "TequilaBar1", "Straße 123", "Blackmusic");      // object pub is created
+        /*Pub pub = new Pub(null, "TequilaBar1", "Straße 123", "Blackmusic");      // object pub is created
         pubs.add(pub);
         pub = new Pub(null, "TequilaBar2", "Straße 23", "HipHop");      // object pub is created
         pubs.add(pub);
         pub = new Pub(null, "TequilaBar3", "Straße 13", "Metal");
         pubs.add(pub);
         pub = new Pub(null, "TequilaBar4", "Straße 12", "Rap");
-        pubs.add(pub);
+        pubs.add(pub);*/
+
+        //List<Pub> pubs = m_DaoSession.getPubDao().loadAll();
         // Load Data
-        this.showPub.setAdapter(new DynamicListViewAdapter<Pub>(this.getApplicationContext(), pubs, new DynamicViewGen<Pub>(Pub.class)));
+        pubAdapter = new DynamicListViewAdapter<Pub> (this.getApplicationContext(), pubs, new DynamicViewGen<Pub>(Pub.class));
+        this.showPub.setAdapter(pubAdapter);
 
         //Get DB-Session
         m_DaoSession = ((GlobalApplication) getApplication()).getDaoSession();
@@ -69,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                 m_DaoSession.getPubDao().insert(pub);                                   // pub is inserted into database
                 */
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Add Pub");
+                builder.setTitle("Add Pub");        // set title for popup
 
                 // Set up the input
                 final EditText input = new EditText(MainActivity.this);
@@ -80,8 +83,12 @@ public class MainActivity extends AppCompatActivity {
                 // Set up the buttons
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        MainActivity.this.m_Text = input.getText().toString();
-
+                        String m_Text;
+                        m_Text = input.getText().toString();         // get text from input
+                        Pub pub = new Pub(null, m_Text, " ", " ");   // make a new object from string
+                        MainActivity.this.m_DaoSession.getPubDao().insert(pub); // insert object into database
+                        MainActivity.this.pubAdapter.getList().add(pub);  // add object to list
+                        MainActivity.this.pubAdapter.notifyDataSetChanged();    // notify data changed
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -92,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
                 builder.show();
                 // create new Pub with the input (m_Text)
-                Pub pub = new Pub(null, m_Text, " ", " ");
-                MainActivity.this.m_DaoSession.getPubDao().insert(pub);
+
+
             }
             // how and where to update the ListView?
 
