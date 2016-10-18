@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -19,6 +20,7 @@ import java.util.List;
 
 import pubfinder.pub.showpubs.DynamicListViewAdapter;
 import pubfinder.pub.showpubs.DynamicViewGen;
+import pubfinder.pub.showpubs.StaticListViewAdapter;
 import pubfinder.pubfinder.db.DaoSession;
 import pubfinder.pubfinder.db.Pub;
 // import Max
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ListView showPub;
     private DaoSession m_DaoSession = null;
-    private DynamicListViewAdapter<Pub> pubAdapter;
+    private StaticListViewAdapter pubAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +46,15 @@ public class MainActivity extends AppCompatActivity {
         // Fill Data
 
         List<Pub> pubs = new ArrayList<Pub>();
+        Pub b = new Pub();
+        b.setAddress("asdsa");
+        b.setMusic("asdasd");
+        b.setName("dddd");
+        pubs.add(b);
 
         // Load Data
-        pubAdapter = new DynamicListViewAdapter<Pub> (this.getApplicationContext(), pubs, new DynamicViewGen<Pub>(Pub.class));
+        //pubAdapter = new DynamicListViewAdapter<Pub> (this, pubs, new DynamicViewGen<Pub>(Pub.class));
+        pubAdapter = new StaticListViewAdapter(this, pubs);
         this.showPub.setAdapter(pubAdapter);
 
         //Get DB-Session
