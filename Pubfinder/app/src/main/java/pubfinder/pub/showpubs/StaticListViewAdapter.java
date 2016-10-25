@@ -72,7 +72,7 @@ public class StaticListViewAdapter extends BaseAdapter {
                     StaticListViewFragment fragment = new StaticListViewFragment();
                     fragment.setArguments(bundle);
                     android.app.FragmentManager manager = activity.getFragmentManager();
-                    manager.beginTransaction().replace(R.id.twoPane, fragment);
+                    manager.beginTransaction().replace(R.id.twoPane, fragment).commit();
 
                 }else{
 

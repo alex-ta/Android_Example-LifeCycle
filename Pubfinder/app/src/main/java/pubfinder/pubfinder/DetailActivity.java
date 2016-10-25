@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,9 +33,10 @@ public class DetailActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.detail_main);
+        Bundle bundle = this.getIntent().getExtras().getBundle("bundle");
         Fragment fragment = new StaticListViewFragment();
-        fragment.setArguments(this.getIntent().getExtras().getBundle("bundle"));
-        this.getFragmentManager().beginTransaction().add(fragment,"detail");
+        fragment.setArguments(bundle);
+        this.getFragmentManager().beginTransaction().add(android.R.id.content,fragment,"detail").commit();
     }
 
     @Override

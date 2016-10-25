@@ -10,26 +10,34 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="pubfinder.pubfinder.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="pubfinder.pubfinder.MainActivity">
 
     <TextView
         android:id="@+id/detail_show_pub_name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        />
 
     <TextView
         android:id="@+id/detail_show_pub_id"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="40dp"/>
 
     <TextView
         android:id="@+id/detail_show_pub_music"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="70dp" />
 
     <TextView
         android:id="@+id/detail_show_pub_address"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="100dp"/>
 </RelativeLayout>

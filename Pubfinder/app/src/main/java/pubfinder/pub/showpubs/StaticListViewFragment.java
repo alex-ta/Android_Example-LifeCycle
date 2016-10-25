@@ -2,6 +2,7 @@ package pubfinder.pub.showpubs;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +19,15 @@ public class StaticListViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        savedInstanceState = this.getArguments();
+
         // get Data from Bundle
         String name = savedInstanceState.getString("name");
         String id = savedInstanceState.getString("id");
         String music = savedInstanceState.getString("music");
         String address = savedInstanceState.getString("address");
+
+        Log.d("Name: ", name);
 
         View view = inflater.inflate(R.layout.detail_show_pubs, container, false);
 
