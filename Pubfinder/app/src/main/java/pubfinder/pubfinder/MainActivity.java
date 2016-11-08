@@ -45,20 +45,22 @@ public class MainActivity extends AppCompatActivity {
         this.showPub = (ListView) this.findViewById(R.id.show_listview);
         // Fill Data
 
-        List<Pub> pubs = new ArrayList<Pub>();
-        Pub b = new Pub();
+        //List<Pub> pubs = new ArrayList<Pub>();
+        /*Pub b = new Pub();
         b.setAddress("asdsa");
         b.setMusic("asdasd");
-        b.setName("dddd");
-        pubs.add(b);
+        b.setName("dddd");*/
+        //pubs.add(b);
+
+        //Get DB-Session
+        m_DaoSession = ((GlobalApplication) getApplication()).getDaoSession();
+
+        List<Pub> pubs = m_DaoSession.getPubDao().loadAll();
 
         // Load Data
         //pubAdapter = new DynamicListViewAdapter<Pub> (this, pubs, new DynamicViewGen<Pub>(Pub.class));
         pubAdapter = new StaticListViewAdapter(this, pubs);
         this.showPub.setAdapter(pubAdapter);
-
-        //Get DB-Session
-        m_DaoSession = ((GlobalApplication) getApplication()).getDaoSession();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -84,10 +86,26 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         String m_Text;
                         m_Text = input.getText().toString();         // get text from input
-                        Pub pub = new Pub(null, m_Text, " ", " ");   // make a new object from string
-                        MainActivity.this.m_DaoSession.getPubDao().insert(pub); // insert object into database
-                        MainActivity.this.pubAdapter.getList().add(pub);  // add object to list
-                        MainActivity.this.pubAdapter.notifyDataSetChanged();    // notify data changed
+                        if(m_Text.isEmpty() == true){
+                            // dont add it and send an error
+                            new AlertDialog.Builder(MainActivity.this)
+                                    .setTitle("Error")
+                                    .setMessage("The Pub has to have a name!")
+                                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // continue with adding a pub
+                                            // open the popupmenu again
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+                        else {
+                            Pub pub = new Pub(null, m_Text, " ", " ");   // make a new object from string
+                            MainActivity.this.m_DaoSession.getPubDao().insert(pub); // insert object into database
+                            MainActivity.this.pubAdapter.getList().add(pub);  // add object to list
+                            MainActivity.this.pubAdapter.notifyDataSetChanged();    // notify data changed
+                        }
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -134,5 +152,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // save Data here
+        // Data is already saved in db
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // restore Data here
+        List<Pub> pubs = m_DaoSession.getPubDao().loadAll();
+        pubAdapter = new StaticListViewAdapter(this, pubs);
+        this.showPub.setAdapter(pubAdapter);
     }
 }
