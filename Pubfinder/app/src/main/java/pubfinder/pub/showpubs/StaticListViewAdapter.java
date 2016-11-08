@@ -67,17 +67,23 @@ public class StaticListViewAdapter extends BaseAdapter {
 
                 Log.d("Data",bundle.toString());
 
-                if(activity.getResources().getBoolean(R.bool.isTablet)){
+                if(activity.getApplication().getResources().getBoolean(R.bool.isTablet)){
                     //
+                    Log.d("0","0");
                     StaticListViewFragment fragment = new StaticListViewFragment();
+                    Log.d("a","a");
                     fragment.setArguments(bundle);
+                    Log.d("b","b");
                     android.app.FragmentManager manager = activity.getFragmentManager();
-                    manager.beginTransaction().replace(R.id.twoPane, fragment).commit();
+                    Log.d("c","c");
+                    manager.beginTransaction().add(fragment, "CONTENTFRAGMENT").commit();
 
                 }else{
-
+                    Log.d("1","1");
                     Intent intent = new Intent(activity, DetailActivity.class);
+                    Log.d("2","2");
                     intent.putExtra("bundle", bundle);
+                    Log.d("3","3");
                     activity.startActivity(intent);
 
                 }

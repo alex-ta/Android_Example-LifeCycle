@@ -1,31 +1,21 @@
 package pubfinder.pubfinder;
 
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import pubfinder.pub.showpubs.DynamicListViewAdapter;
-import pubfinder.pub.showpubs.DynamicViewGen;
-import pubfinder.pub.showpubs.StaticListViewAdapter;
+import pubfinder.pubfinder.asynch.UpdateUI;
 import pubfinder.pubfinder.db.DaoSession;
 import pubfinder.pubfinder.db.Pub;
 // import Max
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.widget.EditText;
 import android.text.InputType;
 import android.content.DialogInterface;
@@ -33,34 +23,21 @@ import android.content.DialogInterface;
 public class MainActivity extends AppCompatActivity {
 
     private ListView showPub;
-    private DaoSession m_DaoSession = null;
-    private StaticListViewAdapter pubAdapter;
+    private UpdateUI updateUI = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        updateUI = new UpdateUI(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         this.showPub = (ListView) this.findViewById(R.id.show_listview);
-        // Fill Data
-
-        //List<Pub> pubs = new ArrayList<Pub>();
-        /*Pub b = new Pub();
-        b.setAddress("asdsa");
-        b.setMusic("asdasd");
-        b.setName("dddd");*/
-        //pubs.add(b);
-
-        //Get DB-Session
-        m_DaoSession = ((GlobalApplication) getApplication()).getDaoSession();
-
-        List<Pub> pubs = m_DaoSession.getPubDao().loadAll();
+        this.showPub.setAdapter(updateUI.getAdapter());
 
         // Load Data
         //pubAdapter = new DynamicListViewAdapter<Pub> (this, pubs, new DynamicViewGen<Pub>(Pub.class));
-        pubAdapter = new StaticListViewAdapter(this, pubs);
-        this.showPub.setAdapter(pubAdapter);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -102,9 +79,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                         else {
                             Pub pub = new Pub(null, m_Text, " ", " ");   // make a new object from string
-                            MainActivity.this.m_DaoSession.getPubDao().insert(pub); // insert object into database
-                            MainActivity.this.pubAdapter.getList().add(pub);  // add object to list
-                            MainActivity.this.pubAdapter.notifyDataSetChanged();    // notify data changed
+                            updateUI.execute(pub);
                         }
                     }
                 });
@@ -165,8 +140,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         // restore Data here
-        List<Pub> pubs = m_DaoSession.getPubDao().loadAll();
-        pubAdapter = new StaticListViewAdapter(this, pubs);
-        this.showPub.setAdapter(pubAdapter);
+        updateUI.execute();
     }
 }
